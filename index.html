@@ -13,9 +13,9 @@
     <div class="header">
         <a href="#default" class="logo">Пример работы Wintorez'a</a>
         <div class="header-right">
-          <a class="active" href="#home">Главная</a>
-          <a href="#contact">Контакты</a>
-          <a href="#about">Об авторе</a>
+          <a  id="home" onclick="selectClassActive('home')">Главная</a>
+          <a  id="contacts" onclick="selectClassActive('contacts')" >Контакты</a>
+          <a  id="about" class="active" onclick="selectClassActive('about')">Об авторе</a>
         </div>
       </div>
 
@@ -24,14 +24,13 @@
 
         <h1>Портфолио </h1>
         <small>Wintorez'a</small>
-        <div>
+        <div id="about">
             <img src="./img/arabesko.ru_04.png">
         </div>
     </div>
-    <div>
 
 
     
-
+<script src="./js/script.js"></script>
 </body>
 </html>
