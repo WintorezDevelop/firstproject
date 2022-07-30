@@ -13,8 +13,8 @@
         <a href="#default" class="logo">Домашнее задание</a>
         <div class="header-right">
           <a  id="home" onclick="selectClassActive('home')" href="#anchor_head">Главная</a>
-          <a  id="contacts" onclick="selectClassActive('contacts')" href="#anchor_aboutme">Контакты</a>
-          <a  id="about" class="active" onclick="selectClassActive('about')">Об авторе</a>
+          <a  id="contacts" onclick="selectClassActive('contacts')" href="#anchor_addstudents">Добавить студента</a>
+          <a  id="about" class="active" onclick="selectClassActive('about')" href="#anchor_students">Список студентов</a>
         </div>
       </div>
 
@@ -22,14 +22,14 @@
         <h1>Сортировка </h1>s
         <small>Студентов</small>
         <div id="line_aboutme">
-            <div id="anchor_aboutme"></div>
+            <div id="anchor_addstudents"></div>
             <img src="./img/arabesko.ru_04.png">
         </div>  
     </div>
     
     <section class="content">
         <div class="_container">
-            <h2 class="content__title">Поле для добавления студентов</h2>
+            <h2 class="content__title">Добавить студента</h2>
             <div class="content__text">
             </div>
         </div>
@@ -37,14 +37,17 @@
 
     <section class="content">
         <div class="table_container">
+            <div id="anchor_students"></div>
+
             <img src="./img/arabesko.ru_04.png">
             <h2 class="content__title">Список студентов</h2>
+            <div>
+                <button class="refresh_students" onclick="rerefreshStudents()"> Обновить список студентов</button>
+            </div>
             <div class="content__text">
             </div>
         </div>
     </section>
-
 <script src="./js/script.js"></script>
-
 </body>
 </html>

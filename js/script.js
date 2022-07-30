@@ -4,6 +4,8 @@ function selectClassActive (id) {
     let a = document.getElementById(id);
     a.classList.add('active');
 }
+let filterStudents = [];
+
 let contents = document.getElementsByClassName("content__text");
 let inputName = document.createElement('input');
 let inputFamily = document.createElement('input');
@@ -65,9 +67,12 @@ button.onclick = function(){
     student.Birth = inputBirth.value,
     student.Year = inputYear.value,
     student.Faculty = inputFaculty.value;
+    student.bool = 0;
     students.push(student);
-    //createTable(student); 
-    console.log(students);
+    createTable(student); 
+        filterStudents = students;
+
+
     } else {
         if (inputName.value == 0) {
             alert('Введите корректное имя');
@@ -92,7 +97,11 @@ button.onclick = function(){
 let table = document.createElement('table');
 table.id = 'tableStudents';
 let filters = filterStudent(tableStart);
-createTableStart(tableStart);
+let sortButton = createTableStart(tableStart);
+let booleanBirth = 0;
+let booleanName = 0;
+let booleanYear = 0;
+let booleanFaculty = 0;
 
 function filterStudent(student) {            
     let thNameFamilyPatronymic = document.createElement('th');
@@ -191,3 +200,605 @@ function createTableStart(student) {
     };
 
 }
+function createTable(student) {            
+    let thNameFamilyPatronymic = document.createElement('th');
+    let thBirth = document.createElement('th');
+    let thYear = document.createElement('th');
+    let thFaculty = document.createElement('th');
+    let tr = document.createElement('tr');
+    tr.id = count;
+    count++;
+
+    let birth = Number(student.Birth.substr(0,4));
+    let age = dateNow.getFullYear() - birth;
+    let years = new Date(student.Birth).getFullYear();
+
+    let stringAge = "(" + age + " лет)";
+
+    let yearLearmLastDate = Number(student.Year) + 4;
+
+    let kurs = dateNow.getFullYear() - Number(student.Year);
+    let yearLearnAll;
+    if(kurs > 0 && kurs<5){ 
+        yearLearnAll = student.Year + " - " + yearLearmLastDate + "(" + kurs + " курс)";
+    } else if (kurs > 0){
+        yearLearnAll = student.Year + " - " + yearLearmLastDate + "(Окончил обучение)";
+    } else {
+        yearLearnAll = student.Year + " - " + yearLearmLastDate + "(Поступает)";
+    }
+
+    document.body.append(table);
+    table.appendChild(tr);
+
+    thNameFamilyPatronymic.textContent = student.Name + " " + student.Family + " " + student.Patronymic;
+    tr.appendChild(thNameFamilyPatronymic);
+
+    thFaculty.textContent = student.Faculty;
+    tr.appendChild(thFaculty);
+
+    thBirth.textContent = student.Birth + stringAge;
+    tr.appendChild(thBirth);
+
+    thYear.textContent = yearLearnAll;
+    tr.appendChild(thYear);
+}
+
+filters.inputFaculty.addEventListener('input', function(){filterinputFaculty();});
+filters.inputYear.addEventListener('input', function(){filterinputYear();});
+filters.inputBirth.addEventListener('input', function(){filterinputBirth();});
+filters.inputPatronymic.addEventListener('input', function(){filterinputPatronymic();});
+filters.inputFamily.addEventListener('input', function(){filterinputFamily();});
+filters.inputName.addEventListener('input', function(){filterinputName();});
+
+function filterinputFaculty(){
+    filterStudents = [];
+/************************Блок удаления предыдущих списков***************************/
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+/***********************************/
+    for (let i = 0; i < students.length; i++){
+        if (filters.inputFaculty.value == students[i].Faculty){
+            filterStudents.push(students[i]);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputYear.value != filterStudents[i].Year && filters.inputYear.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputBirth.value != filterStudents[i].Birth && filters.inputBirth.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputPatronymic.value != filterStudents[i].Patronymic && filters.inputPatronymic.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFamily.value != filterStudents[i].Family && filters.inputFamily.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputName.value != filterStudents[i].Name && filters.inputName.value){
+            filterStudents.splice(i);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        createTable(filterStudents[i]); 
+    } 
+    return filterStudents;
+
+}
+
+function filterinputYear(){
+    filterStudents = [];
+/************************Блок удаления предыдущих списков***************************/
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+/***********************************/
+    for (let i = 0; i < students.length; i++){
+        if (filters.inputYear.value == students[i].Year){
+            filterStudents.push(students[i]);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFaculty.value != filterStudents[i].Faculty  && filters.inputFaculty.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputBirth.value != filterStudents[i].Birth && filters.inputBirth.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputPatronymic.value != filterStudents[i].Patronymic && filters.inputPatronymic.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFamily.value != filterStudents[i].Family && filters.inputFamily.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputName.value != filterStudents[i].Name && filters.inputName.value){
+            filterStudents.splice(i);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        createTable(filterStudents[i]); 
+    } 
+    return filterStudents;
+
+}
+
+function filterinputBirth(){
+
+    filterStudents = [];
+/************************Блок удаления предыдущих списков***************************/
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+/***********************************/
+    for (let i = 0; i < students.length; i++){
+        if (filters.inputBirth.value == students[i].Birth){
+            filterStudents.push(students[i]);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFaculty.value != filterStudents[i].Faculty  && filters.inputFaculty.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputYear.value != filterStudents[i].Year && filters.inputYear.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputPatronymic.value != filterStudents[i].Patronymic && filters.inputPatronymic.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFamily.value != filterStudents[i].Family && filters.inputFamily.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputName.value != filterStudents[i].Name && filters.inputName.value){
+            filterStudents.splice(i);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        createTable(filterStudents[i]); 
+    } 
+    return filterStudents;
+
+}
+
+function filterinputPatronymic(){
+
+    filterStudents = [];/************************Блок удаления предыдущих списков***************************/
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+/***********************************/
+    for (let i = 0; i < students.length; i++){
+        if (filters.inputPatronymic.value == students[i].Patronymic){
+            filterStudents.push(students[i]);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFaculty.value != filterStudents[i].Faculty  && filters.inputFaculty.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputYear.value != filterStudents[i].Year && filters.inputYear.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputBirth.value != filterStudents[i].Birth && filters.inputBirth.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFamily.value != filterStudents[i].Family && filters.inputFamily.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputName.value != filterStudents[i].Name && filters.inputName.value){
+            filterStudents.splice(i);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        createTable(filterStudents[i]); 
+    } 
+    return filterStudents;
+
+}
+
+function filterinputFamily(){
+
+    filterStudents = [];/************************Блок удаления предыдущих списков***************************/
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+/***********************************/
+    for (let i = 0; i < students.length; i++){
+        if (filters.inputFamily.value == students[i].Family){
+            filterStudents.push(students[i]);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFaculty.value != filterStudents[i].Faculty  && filters.inputFaculty.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputYear.value != filterStudents[i].Year && filters.inputYear.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputBirth.value != filterStudents[i].Birth && filters.inputBirth.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputPatronymic.value != filterStudents[i].Patronymic && filters.inputPatronymic.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputName.value != filterStudents[i].Name && filters.inputName.value){
+            filterStudents.splice(i);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        createTable(filterStudents[i]); 
+    } 
+    return filterStudents;
+
+}
+
+function filterinputName(){
+
+    filterStudents = [];/************************Блок удаления предыдущих списков***************************/
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+/***********************************/
+    for (let i = 0; i < students.length; i++){
+        if (filters.inputName.value == students[i].Name){
+            filterStudents.push(students[i]);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFaculty.value != filterStudents[i].Faculty  && filters.inputFaculty.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputYear.value != filterStudents[i].Year && filters.inputYear.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputBirth.value != filterStudents[i].Birth && filters.inputBirth.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputPatronymic.value != filterStudents[i].Patronymic && filters.inputPatronymic.value){
+            filterStudents.splice(i);
+        } 
+    } 
+    for (let i = 0; i < filterStudents.length; i++){
+        if (filters.inputFamily.value != filterStudents[i].Family && filters.inputFamily.value){
+            filterStudents.splice(i);
+        } 
+    } 
+
+    for (let i = 0; i < filterStudents.length; i++){
+        createTable(filterStudents[i]); 
+    } 
+    return filterStudents;
+}
+
+function rerefreshStudents(){
+    filterStudents = [];
+    for (let i = 0; i < students.length; i++){
+        let trdelete = document.getElementById(i);
+
+        if (trdelete == null){
+            break;
+        }
+
+        trdelete.remove();
+    } 
+    count = 0; 
+    for (let i = 0; i < students.length; i++){
+        createTable(students[i]); 
+    } 
+    filters.inputName.value = null;
+    filters.inputFamily.value = null;
+    filters.inputYear.value = null;
+    filters.inputFaculty.value = null;
+    filters.inputPatronymic.value = null;
+    filters.inputBirth.value = null;
+
+}
+
+
+sortButton.buttonFaculty.onclick = function(){
+    if (booleanFaculty == 0) {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Faculty > b.Faculty) {
+                return 1;
+            }
+            if (a.Faculty < b.Faculty) {
+                return -1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanFaculty = 1;
+    } else {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Faculty > b.Faculty) {
+                return -1;
+            }
+            if (a.Faculty < b.Faculty) {
+                return 1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanFaculty = 0;
+    } 
+    
+}
+
+sortButton.buttonYear.onclick = function(){
+    if (booleanYear == 0) {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Year > b.Year) {
+                return 1;
+            }
+            if (a.Year < b.Year) {
+                return -1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanYear = 1;
+    } else {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Year > b.Year) {
+                return -1;
+            }
+            if (a.Year < b.Year) {
+                return 1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanYear = 0;
+    }
+}
+
+sortButton.buttonBirth.onclick = function(){
+    if (booleanBirth == 0) {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Birth > b.Birth) {
+                return 1;
+            }
+            if (a.Birth < b.Birth) {
+                return -1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanBirth = 1;
+    } else {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Birth > b.Birth) {
+                return -1;
+            }
+            if (a.Birth < b.Birth) {
+                return 1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanBirth = 0;
+    }
+}
+
+sortButton.buttonNameFamilyPatronymic.onclick = function(){
+    if (booleanName == 0) {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Name > b.Name) {
+                return 1;
+            }
+            if (a.Name < b.Name) {
+                return -1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanName = 1;
+    } else {
+        for (let i = 0; i < count; i++){
+            let trdelete = document.getElementById(i);
+            trdelete.remove();
+        }
+
+        filterStudents.sort(function (a, b) {
+            if (a.Name > b.Name) {
+                return -1;
+            }
+            if (a.Name < b.Name) {
+                return 1;
+            }
+            // a должно быть равным b
+            return 0;
+        });
+
+        let countCopy = count;
+        count = 0;
+
+        for (let i = 0; i < filterStudents.length; i++){
+            createTable(filterStudents[i]);
+        }
+        booleanName = 0;
+    }
+}
+
